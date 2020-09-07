@@ -10,25 +10,27 @@
 	<h3>사용자 목록</h3>
 	
 	<table border="1">
+		<tr>
+			<th>아이디</th>
+			<th>이름</th>
+			<th>휴대폰</th>
+			<th>나이</th>
+			<th>관리</th>
+		</tr>
+		<c:forEach var="user" items="${ users }">
 			<tr>
-				<th>아이디</th>
-				<th>이름</th>
-				<th>휴대폰</th>
-				<th>나이</th>
-				<th>관리</th>
+				<td>${ user.uid }</td>
+				<td>${ user.name }</td>
+				<td>${ user.hp }</td>
+				<td>${ user.age }</td>
+				<td>
+					<a href="/ch08/user/modify?uid=${ user.uid }">수정</a>
+					<a href="/ch08/user/delete?uid=${ user.uid }">삭제</a>
+				</td>
 			</tr>
-			<c:forEach var="user" items="${ users }">
-				<tr>
-					<td>${ user.uid }</td>
-					<td>${ user.name }</td>
-					<td>${ user.hp }</td>
-					<td>${ user.age }</td>
-					<td>
-						<a href="/ch08/user/modify?uid=${ user.uid }">수정</a>
-						<a href="/ch08/user/delete?uid=${ user.uid }">삭제</a>
-					</td>
-				</tr>
-			</c:forEach>
-		</table>
+		</c:forEach>
+	</table>
+	<a href="/ch08">홈</a>
+	<a href="/ch08/user/register">등록</a>
 </body>
 </html>

@@ -33,5 +33,6 @@
 			</tr>
 		</table>
 	</form>
+	<a href="/ch08">홈</a>
 </body>
 </html>
