@@ -25,5 +25,9 @@ public class UserService {
 	public TermsVO selectTerms() {
 		return dao.selectTerms();
 	}
+	
+	public int selectUserCount(String uid) {
+		return dao.selectUserCount(uid);
+	}
 
 }

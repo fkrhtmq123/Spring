@@ -22,6 +22,11 @@
 			`regip`=#{regip},		
 			`rdate`=NOW();		
 	</insert>
+	
+	<select id="SELECT_USER_COUNT" resultType="int">
+		SELECT COUNT(*) FROM `JBOARD_MEMBER` 
+		WHERE `uid`=#{uid};
+	</select>
 
 <!-- 
 	<select id="SELECT_USER" resultType="kr.co.ch08.vo.UserVO">
