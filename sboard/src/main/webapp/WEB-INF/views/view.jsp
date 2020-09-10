@@ -1,10 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>글보기</title>
-    <link rel="stylesheet" href="./css/style.css"/>
+    <link rel="stylesheet" href="/sboard/css/style.css"/>
 </head>
 <body>
     <div id="wrapper">
@@ -13,26 +14,30 @@
             <table>
                 <tr>
                     <td>제목</td>
-                    <td><input type="text" name="title" value="제목입니다." readonly/></td>
+                    <td><input type="text" name="title" value="${board.title}" readonly/></td>
                 </tr>
+                <c:if test="${board.file == 1 }">
                 <tr>
                     <td>첨부파일</td>
                     <td>
-                        <a href="#">2020년 상반기 매출자료.xls</a>
-                        <span>7회 다운로드</span>
+                        <a href="/sboard/file/download?newName=${board.newName}&oldName=${board.oldName}">${board.oldName}</a>
+                        <span>${board.download}&nbsp회 다운로드</span>
                     </td>
                 </tr>
+                </c:if>
                 <tr>
                     <td>내용</td>
                     <td>
-                        <textarea name="content" readonly>내용 샘플입니다.</textarea>
+                        <textarea name="content" readonly>${board.content}</textarea>
                     </td>
                 </tr>
             </table>
             <div>
-                <a href="#" class="btnDelete">삭제</a>
-                <a href="./modify.html" class="btnModify">수정</a>
-                <a href="./list.html" class="btnList">목록</a>
+            	<c:if test="${board.uid == member.uid }">
+	                <a href="/sboard/delete?seq=${board.seq}" class="btnDelete">삭제</a>
+	                <a href="/sboard/modify?seq=${board.seq}" class="btnModify">수정</a>
+                </c:if>
+                <a href="/sboard/list" class="btnList">목록</a>
             </div>  
             
             <!-- 댓글리스트 -->

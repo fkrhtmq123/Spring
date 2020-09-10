@@ -51,4 +51,10 @@
 	<mvc:resources location="/resources/img/" mapping="/img/**"></mvc:resources>
 	<mvc:resources location="/resources/js/" mapping="/js/**"></mvc:resources>
 	
+	<!-- 파일 업로드 설정 
+	id 값은 반드시 'multipartResolver'-->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="10000000"></property>
+	</bean>
+	
 </beans>

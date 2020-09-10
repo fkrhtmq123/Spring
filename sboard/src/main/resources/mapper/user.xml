@@ -27,11 +27,14 @@
 		SELECT COUNT(*) FROM `JBOARD_MEMBER` 
 		WHERE `uid`=#{uid};
 	</select>
+	
+	<select id="SELECT_USER" resultType="kr.co.sboard.vo.UserVO">
+		SELECT * FROM `JBOARD_MEMBER` 
+		WHERE `uid`=#{uid} AND `pass`=PASSWORD(#{pass});
+	</select>
 
 <!-- 
-	<select id="SELECT_USER" resultType="kr.co.ch08.vo.UserVO">
-		SELECT * FROM `USER3` WHERE `uid`=#{uid};
-	</select>
+	
 	
 	<select id="SELECT_USERS" resultType="kr.co.ch08.vo.UserVO">
 		SELECT * FROM `USER3`;
