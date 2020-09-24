@@ -1,0 +1,90 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="/layout/layout_shop.html">
+	  
+   <!-- 장바구니 -->
+   <section id="cart" layout:fragment="content">
+     
+     <!-- 제목, 페이지 네비게이션 -->
+     <nav>
+       <h1>장바구니</h1>
+       <p>
+         HOME > <span>패션·의류·뷰티</span> > <strong>장바구니</strong>
+       </p>
+     </nav>
+     
+     <section>
+       <form action="#">
+         <table>
+           <thead>
+             <tr>
+               <th><input type="checkbox" name="all"></th>
+               <th>상품명</th>
+               <th>총수량</th>
+               <th>판매가</th>
+               <th>포인트</th>
+               <th>배송비</th>
+               <th>소계</th>
+             </tr>
+           </thead>
+           <tbody>
+             <tr class="empty">
+               <td colspan="7">장바구니에 상품이 없습니다.</td>
+             </tr>
+             <tr>
+               <td><input type="checkbox" name=""></td>
+               <td>
+                 <article>
+                   <a href="#"><img src="../img/thumb-sample-t2.jpg" alt=""></a>
+                   <div>
+                     <h2><a href="#">TH-블락체크 셔츠-그레이2 [면세]</a></h2>
+                     <p>SIZE:M / COLOR:블루 1개</p>
+                   </div>
+                 </article>
+               </td>
+               <td>1</td>
+               <td>27,000</td>
+               <td>270</td>
+               <td>무료배송</td>
+               <td>27,000</td>
+             </tr>
+           </tbody>
+         </table>
+         <input type="button" name="del" value="선택삭제">
+       </form>
+     </section>
+
+     <div class="info">
+       <h2>전체합계</h2>
+       <table border="0">
+         <tr>
+           <td>상품수</td>
+           <td>1</td>
+         </tr>
+         <tr>
+           <td>상품금액</td>
+           <td>27,000</td>
+         </tr>
+         <tr>
+           <td>할인금액</td>
+           <td>-1,000</td>
+         </tr>
+         <tr>
+           <td>배송비</td>
+           <td>0</td>
+         </tr>              
+         <tr>
+           <td>포인트</td>
+           <td>260</td>
+         </tr>
+         <tr>
+           <td>전체주문금액</td>
+           <td>26,000</td>
+         </tr>
+       </table>
+       <input type="button" name="" value="주문하기">
+
+     </div>
+   </section>
+        
+</html>
