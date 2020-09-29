@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.kmarket.dao.MainDAO">
+
+	<select id="selectCate" resultType="kr.co.kmarket.vo.CategoryVO">
+	<!-- SELECT c1.`code1`, c2.`code2`, c1.`title` AS c1Tit, c2.`title` AS c2Tit FROM `km_category1` AS c1
+		JOIN `km_category2` AS c2 
+		ON c1.`code1` = c2.`code1`  
+		ORDER BY `code1`, `code2`; -->	
+		SELECT * FROM `km_category1` ORDER BY `code1`;
+	</select>
+	
+	<select id="selectHitProduct" resultType="kr.co.kmarket.vo.ProductsVO">
+		SELECT *, Floor(price*(1-discount/100)) AS salePrice 
+		FROM `km_products` 
+		ORDER BY `hit` DESC 
+		LIMIT 8;
+	</select>
+	
+	<select id="selectBestProduct" resultType="kr.co.kmarket.vo.ProductsVO">
+		SELECT *,FLOOR(`price`*(1-`discount`/100)) AS `salePrice` 
+		FROM `km_products` 
+		ORDER BY `sold` DESC 
+		LIMIT 5;
+	</select>
+	
+	<select id="selectRecProduct" resultType="kr.co.kmarket.vo.ProductsVO">
+		SELECT *,FLOOR(`price`*(1-`discount`/100)) AS `salePrice` 
+		FROM `km_products` 
+		ORDER BY `score` DESC 
+		LIMIT 8;
+	</select>
+	
+	<select id="selectRdateProduct" resultType="kr.co.kmarket.vo.ProductsVO">
+		SELECT *,FLOOR(`price`*(1-`discount`/100)) AS `salePrice` 
+		FROM `km_products` 
+		ORDER BY `rdate` 
+		DESC LIMIT 8;
+	</select>
+
+<!-- 
+	
+	<select id="selectUser" resultType="kr.co.ch11.vo.UserVO">
+		SELECT * FROM `USER3` WHERE `uid`=#{uid};
+	</select>
+	
+	<update id="updateUser">
+		UPDATE `USER3` SET 
+		`name`=#{name},
+		`hp`=#{hp},
+		`age`=#{age}
+		WHERE `uid`=#{uid};
+	</update>
+	
+ -->	
+</mapper>

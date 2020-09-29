@@ -29,8 +29,20 @@ public class AdminProductController {
 	@Autowired
 	private AdminCategory2Repo cate2Repo;
 	
+	@ResponseBody
+	@GetMapping("/admin/product/delete")
+	public int delete(String[] codes) {
+		
+		int result = service.deleteProduct(codes);
+		
+		return result;
+	}
+	
 	@GetMapping("/admin/product/search")
-	public String search(String pg, String opt, String keyword, Model model) {
+	public String search(String pg, String opt, String keyword, Model model, HttpServletRequest req) {
+		
+		String keywords = req.getParameter("keyword");
+		String opts = req.getParameter("opt");
 		
 		int start = service.getLimitStart(pg);
 		int total = service.selectCountProductBySearch();
@@ -53,6 +65,8 @@ public class AdminProductController {
 		model.addAttribute("count", count);
 		model.addAttribute("groupStart", groupStart);
 		model.addAttribute("groupEnd", groupEnd);
+		model.addAttribute("keywords", keywords);
+		model.addAttribute("opts", opts);
 		
 		return "/admin/product/list";
 	}

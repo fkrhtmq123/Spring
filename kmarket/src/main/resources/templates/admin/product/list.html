@@ -3,6 +3,55 @@
 	  layout:decorate="/layout/layout_admin.html">
 
     <section id="admin-product-list" layout:fragment="content">
+    
+    	<script>
+    		$(function(){
+    			var checkAll = $('input[name=all]')
+    			var btnCheckDel = $('#btnCheckDel')
+    			
+    			btnCheckDel.click(function(){
+    				var codes = []
+    				
+    				// 체크한 체크박스 value 값 추출
+    				$('input[name=chkProduct]:checked').each(function(i){
+    					var code = $(this).val()
+    					codes.push(code)
+    				})
+    				
+    				if(codes.length != 0) {
+    					var param = {'codes':codes}
+    					//jQuery.ajaxSettings.traditional = true, 밑과 같이 ajax안에 넣어도 된다.
+
+    					$.ajax({
+        					url: '/kmarket/admin/product/delete',
+        					type: 'get',
+        					data: param,
+        					traditional: true,
+        					dataType: 'text',
+        					success: function(data){
+            					alert('삭제 상품 갯수 : '+data)
+            					location.replace('/kmarket/admin/product/list')
+        					}
+        				});
+    				} else {
+    					alert('상품을 선택하세요.')
+    				}
+    			})
+    			
+    			checkAll.click(function(){
+    				var isChecked = $(this).is(':checked')
+    				
+    				if(isChecked){
+    					$('input[name=chkProduct]').prop('checked',true)
+    					//$('input[name=chkProduct]').attr("checked",true)
+    				} else {
+    					$('input[name=chkProduct]').prop('checked',false)
+    					//$('input[name=chkProduct]').attr("checked",false)
+    				}
+    			})
+    		})
+    	</script>
+    
         <nav>
             <h3>상품목록</h3>
             <p>
@@ -39,7 +88,7 @@
                 </tr>
 
                 <tr th:each="product:${products}">
-                    <td><input type="checkbox" name="상품코드"/></td>
+                    <td><input type="checkbox" name="chkProduct" th:value="${product.code}"/></td>
                     <td><img th:src="@{'/thumb/'+${product.cate1}+'/'+${product.cate2}+'/'+${product.thumb1}}" class="thumb"></td>
                     <td>[[${product.code}]]</td>
                     <td>[[${product.name}]]</td>
@@ -58,10 +107,10 @@
             </table>
 
             
-            <input type="button" value="선택삭제" />                          
+            <input type="button" id="btnCheckDel" value="선택삭제" />                          
 
 
-            <div class="paging">
+            <div class="paging" th:if="${keywords==null}">
                 <span class="prev" th:if="${groupStart > 1}">
                     <a th:href=@{/admin/product/list(pg=${groupStart-1})}><&nbsp;이전</a>
                 </span>
@@ -71,7 +120,19 @@
                 <span class="next" th:if="${ groupEnd < pageEnd }">
                     <a th:href="@{/admin/product/list(pg=${groupEnd+1})}">다음&nbsp;></a>
                 </span>
-                </div>
+            </div>
+            
+            <div class="paging" th:if="${keywords!=null}">
+                <span class="prev" th:if="${groupStart > 1}">
+                    <a th:href=@{/admin/product/search(opt=${opts},keyword=${keywords},pg=${groupStart-1})}><&nbsp;이전</a>
+                </span>
+                <span class="num">
+                    <a th:each="i:${#numbers.sequence(groupStart, groupEnd)}" th:href=@{/admin/product/search(opt=${opts},keyword=${keywords},pg=${i})} th:text="${i}" th:classappend="${currentPg} == ${i} ? 'on' : '' "></a>
+                </span>
+                <span class="next" th:if="${ groupEnd < pageEnd }">
+                    <a th:href="@{/admin/product/search(opt=${opts},keyword=${keywords},pg=${groupEnd+1})}">다음&nbsp;></a>
+                </span>
+            </div>
 
         </section>                
 

@@ -28,7 +28,10 @@ public class ProductsVO {
 	private int discount;
 	private int point;
 	private int stock;
+	private int sold;
 	private int delivery;
+	private int hit;
+	private int score;
 	private String thumb1;
 	private String thumb2;
 	private String thumb3;
@@ -47,6 +50,8 @@ public class ProductsVO {
 	private String etc5;
 	
 	// 추가필드
+	@Transient
+	private int salePrice;
 	@Transient // 데이터 베이스 영속필드에서 제거(컬럼으로 인식 안되게 함)
 	private MultipartFile file1;
 	@Transient

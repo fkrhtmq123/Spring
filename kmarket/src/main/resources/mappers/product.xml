@@ -26,7 +26,13 @@
 		LIMIT ${start}, 10;
 	</select>
 	
-	
+	<delete id="deleteProduct" parameterType="int">
+		DELETE FROM `km_products` WHERE `code` IN 
+		<foreach collection="array" item="code" open="(" close=")" separator=",">
+			#{code}
+		</foreach>
+		;
+	</delete>
 	
 <!-- 
 	
@@ -45,8 +51,5 @@
 		WHERE `uid`=#{uid};
 	</update>
 	
-	<delete id="deleteUser">
-		DELETE FROM `USER3` WHERE `uid`=#{uid};
-	</delete>
  -->	
 </mapper>

@@ -13,7 +13,7 @@ public interface AdminProductDAO {
 	public ProductsVO selectProduct();
 	public List<ProductsVO> selectProducts(int start);
 	public void updateProduct();
-	public void deleteProduct();
+	public int deleteProduct(String[] codes);
 	public int selectCountProduct();
 	public int selectCountProductBySearch();
 	
