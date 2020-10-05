@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.board">
+
+	<select id="SELECT_BOARDS" resultType="kr.co.farmstory.vo.BoardVO">
+		SELECT a.*, b.nick FROM `JBOARD_ARTICLE` AS a 
+		JOIN `JBOARD_MEMBER` AS b ON a.uid = b.uid 
+		WHERE `parent` = 0 AND `cate`=#{cate} 
+		ORDER BY `seq` DESC 
+		LIMIT #{start}, 10;
+	</select>
+	
+	<select id="SELECT_COUNT_BOARD" resultType="int">
+		SELECT COUNT(*) FROM `JBOARD_ARTICLE` 
+		WHERE `parent`=0 AND `cate`=#{cate};
+	</select>
+	
+	<select id="SELECT_LATEST" resultType="kr.co.farmstory.vo.BoardVO">
+		SELECT * FROM `JBOARD_ARTICLE` 
+		WHERE `parent`=0 AND `cate`=#{cate} 
+		ORDER BY `rdate` DESC 
+		LIMIT 5;
+	</select>
+
+<!-- 
+	<insert id="INSERT_BOARD" useGeneratedKeys="true" keyProperty="seq">
+		INSERT INTO `JBOARD_ARTICLE` SET 
+			`title` = #{title}, 
+			`content` = #{content}, 
+			`file` = #{file},
+			`uid` = #{uid}, 
+			`regip`= #{regip},
+			`rdate` = NOW();
+	</insert>
+	
+	<insert id="INSERT_FILE">
+		INSERT INTO `JBOARD_FILE` SET
+			`parent`=#{parent},
+			`oldName`=#{oldName},
+			`newName`=#{newName},
+			`rdate`=NOW();			
+	</insert>
+	
+	
+	<select id="SELECT_BOARD" resultType="kr.co.sboard.vo.BoardVO">
+		SELECT a.*, b.oldName, b.newName, b.download FROM `JBOARD_ARTICLE` AS a 
+		left JOIN `JBOARD_FILE` AS b ON a.seq = b.parent 
+		WHERE a.`parent` = 0 AND a.`seq` = #{seq};
+	</select>
+	
+	<update id="UPDATE_BOARD" useGeneratedKeys="true" keyProperty="seq">
+		UPDATE `JBOARD_ARTICLE` SET 
+			`title`= #{title},
+			`content`=#{content},
+			`file` = #{file},
+			`regip`= #{regip},
+			`rdate`=NOW() 
+			WHERE `seq`=#{seq};
+	</update>
+	
+	<delete id="DELETE_BOARD">
+		DELETE FROM `JBOARD_ARTICLE` WHERE `seq`=#{seq};
+	</delete>
+	 -->
+</mapper>
