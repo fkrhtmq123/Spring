@@ -1,6 +1,5 @@
 package kr.co.kmarket.controller;
 
-import java.security.MessageDigest;
 import java.time.LocalDateTime;
 
 import javax.servlet.http.HttpServletRequest;
@@ -57,27 +56,9 @@ public class MemberController {
 	}
 	
 	@PostMapping("/member/register")
-	public String register(MemberVO vo, HttpServletRequest req, String encPass) {
+	public String register(MemberVO vo, HttpServletRequest req) {
 
-		/*try {
-			String pass = vo.getPass();
-			MessageDigest digest = MessageDigest.getInstance("SHA-256");
-			byte[] hash = digest.digest(pass.getBytes("UTF-8"));
-			StringBuffer encPass = new StringBuffer();
-			
-			for(int i=0; i<hash.length; i++) {
-				String hex = Integer.toHexString(0xff & hash[i]);
-				if(hex.length() == 1) encPass.append('0');
-				encPass.append(hex);
-			}
-			
-			return encPass.toString();
-			
-		} catch(Exception e) {
-			throw new RuntimeException(e);
-		}
-		
-		vo.setPass(encPass);*/
+		//vo.setPass(Sha256.SHA256(encPass));
 		vo.setIp(req.getRemoteAddr());
 		vo.setRdate(LocalDateTime.now().toString());
 		memberrepo.save(vo);

@@ -3,6 +3,7 @@ package kr.co.kmarket.vo;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.*;
 
@@ -41,5 +42,8 @@ public class MemberVO {
 	private String etc3;
 	private String etc4;
 	private String etc5;
+	
+	@Transient
+	private int encPass;
 
 }
