@@ -327,7 +327,7 @@ main > aside > .best > ol > li > a .dis_price > span {
     vertical-align: text-bottom;
     width: 55px;
     height: 13px;
-    background: url('../img/ico_freeshipping.gif') no-repeat;
+    background: url('/kmarket/img/ico_freeshipping.gif') no-repeat;
 }
 
 /* 메인 첫번째 섹션 */
@@ -412,7 +412,7 @@ main > section > section > article .dis_price > span {
     vertical-align: text-bottom;
     width: 55px;
     height: 13px;
-    background: url('../img/ico_freeshipping.gif') no-repeat;
+    background: url('/kmarket/img/ico_freeshipping.gif') no-repeat;
 }
 
 /* 슬라이더 영역 */
@@ -500,7 +500,7 @@ footer p > strong {
     /* display: none; */
     width: 42px;
     height: 42px;
-    background-image: url('../img/top.png');
+    background-image: url('/kmarket/img/top.png');
     border: none;
     font-size: 0;
     cursor: pointer;
