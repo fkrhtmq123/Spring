@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import kr.co.kmarket.persistence.MemberRepo;
 import kr.co.kmarket.persistence.TermsRepo;
+import kr.co.kmarket.service.MemberService;
 import kr.co.kmarket.vo.MemberVO;
 import kr.co.kmarket.vo.TermsVO;
 
@@ -25,14 +26,33 @@ public class MemberController {
 	@Autowired
 	private MemberRepo memberrepo;
 	
+	@Autowired
+	private MemberService service;
+	
+	@GetMapping("/member/logout")
+	public String logout(HttpSession sess) {
+		sess.invalidate();
+		return "redirect:/";
+	}
+	
 	@GetMapping("/member/login")
-	public String login() {
+	public String login(String success, Model model) {
+		model.addAttribute("success", success);
 		return "/member/login";
 	}
 	
 	@PostMapping("/member/login")
 	public String login(MemberVO vo, HttpSession sess) {
-		return "/member/login";
+		MemberVO member = service.selectMember(vo);
+		
+		if(member != null) {
+			sess.setAttribute("member", member);
+			sess.setAttribute("type", member.getType());
+			return "redirect:/index";
+		} else {
+			return "redirect:/member/login?success=fail";
+		}
+		
 	}
 	
 	@GetMapping("/member/join")
@@ -58,7 +78,6 @@ public class MemberController {
 	@PostMapping("/member/register")
 	public String register(MemberVO vo, HttpServletRequest req) {
 
-		//vo.setPass(Sha256.SHA256(encPass));
 		vo.setIp(req.getRemoteAddr());
 		vo.setRdate(LocalDateTime.now().toString());
 		memberrepo.save(vo);

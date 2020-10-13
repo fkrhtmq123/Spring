@@ -32,12 +32,13 @@ public class ProductsVO {
 	private int delivery;
 	private int hit;
 	private int score;
+	private int review;
 	private String thumb1;
 	private String thumb2;
 	private String thumb3;
 	private String detail;
 	private String status;
-	private String dutyfree;
+	private String dutyFree;
 	private String receipt;
 	private String bizClass;
 	private String origin;

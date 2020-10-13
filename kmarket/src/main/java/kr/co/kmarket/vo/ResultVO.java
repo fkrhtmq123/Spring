@@ -7,5 +7,9 @@ import lombok.*;
 public class ResultVO {
 	
 	private int result;
+	
+	public ResultVO(int result) {
+		this.result = result;
+	}
 
 }
