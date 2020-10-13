@@ -500,7 +500,7 @@ footer p > strong {
     /* display: none; */
     width: 42px;
     height: 42px;
-    background-image: url('../img/top.png');
+    background-image: url('/kmarket/img/top.png');
     border: none;
     font-size: 0;
     cursor: pointer;
@@ -1239,8 +1239,10 @@ h5.rating.star5 {background-position: 0 -200px;}
 }
 
 #cart form > table td:last-child {
+  padding: 50px;
   color:#ff006c;
   font-weight: bold;
+  font-size: 20px;
 }
 #cart form > table td > article {
   overflow: hidden;

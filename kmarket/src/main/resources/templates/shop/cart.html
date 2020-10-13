@@ -9,7 +9,7 @@
      <nav>
        <h1>장바구니</h1>
        <p>
-         HOME > <span>패션·의류·뷰티</span> > <strong>장바구니</strong>
+         HOME > <strong>장바구니</strong>
        </p>
      </nav>
      
@@ -22,31 +22,33 @@
                <th>상품명</th>
                <th>총수량</th>
                <th>판매가</th>
+               <th>할인(%)</th>
                <th>포인트</th>
                <th>배송비</th>
                <th>소계</th>
              </tr>
            </thead>
            <tbody>
-             <tr class="empty">
-               <td colspan="7">장바구니에 상품이 없습니다.</td>
+             <tr th:class="${items.size()} > 0 ? 'empty':''">
+               <td colspan="8">장바구니에 상품이 없습니다.</td>
              </tr>
-             <tr>
+             <tr th:each="item:${items}">
                <td><input type="checkbox" name=""></td>
                <td>
                  <article>
-                   <a href="#"><img src="../img/thumb-sample-t2.jpg" alt=""></a>
+                   <a href="#"><img th:src="@{'/thumb/'+${item.cate1}+'/'+${item.cate2}+'/'+${item.thumb1}}" alt=""></a>
                    <div>
-                     <h2><a href="#">TH-블락체크 셔츠-그레이2 [면세]</a></h2>
-                     <p>SIZE:M / COLOR:블루 1개</p>
+                     &nbsp;<h2><a href="#">[[${item.name}]]</a></h2>
                    </div>
                  </article>
                </td>
-               <td>1</td>
-               <td>27,000</td>
-               <td>270</td>
-               <td>무료배송</td>
-               <td>27,000</td>
+               <td>[[${item.count}]]</td>
+               <td>[[${#numbers.formatInteger(item.price, 3, 'COMMA')}]]</td>
+               <td>[[${item.discount}]]</td>
+               <td>[[${#numbers.formatInteger(item.point, 3, 'COMMA')}]]</td>
+               <td th:if="${item.delivery > 0}">[[${#numbers.formatInteger(item.delivery, 3, 'COMMA')}]]</</td>
+               <td th:if="${item.delivery = 0}">무료배송</td>
+               <td>[[${#numbers.formatInteger(item.total, 3, 'COMMA')}]]</td>
              </tr>
            </tbody>
          </table>
@@ -59,27 +61,27 @@
        <table border="0">
          <tr>
            <td>상품수</td>
-           <td>1</td>
+           <td>[[${totalInfo.count}]]</td>
          </tr>
          <tr>
            <td>상품금액</td>
-           <td>27,000</td>
+           <td>[[${#numbers.formatInteger(totalInfo.price, 3, 'COMMA')}]]</td>
          </tr>
          <tr>
            <td>할인금액</td>
-           <td>-1,000</td>
+           <td>-[[${#numbers.formatInteger(totalInfo.sale, 3, 'COMMA')}]]</td>
          </tr>
          <tr>
            <td>배송비</td>
-           <td>0</td>
+           <td>[[${#numbers.formatInteger(totalInfo.delivery, 3, 'COMMA')}]]</td>
          </tr>              
          <tr>
            <td>포인트</td>
-           <td>260</td>
+           <td>[[${#numbers.formatInteger(totalInfo.point, 3, 'COMMA')}]]</td>
          </tr>
          <tr>
            <td>전체주문금액</td>
-           <td>26,000</td>
+           <td>[[${#numbers.formatInteger(totalInfo.total, 3, 'COMMA')}]]</td>
          </tr>
        </table>
        <input type="button" name="" value="주문하기">

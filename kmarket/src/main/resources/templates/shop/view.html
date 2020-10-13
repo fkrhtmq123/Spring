@@ -12,6 +12,9 @@
   		$('.btns > .cart').click(function(){
   			
   			var member = [[${member}]]
+  			var product = [[${productsVO}]]
+  			var count = $('.option > input[name=count]').val()
+  			var total = (product.price * count) * (1 - product.discount/100)
   			
   			if(member == null){
   				alert('로그인을 먼저 하십시오.')
@@ -21,15 +24,15 @@
   			}
   			
   			var param = {
-  					'uid': "abcd",
-  					'code': 100,
-  					'name': "홍길동",
-  					'count': 3,
-  					'price': 3000,
-  					'discount': 10,
-  					'point': 30,
-  					'delivery': 2500,
-  					'total': 8100
+  					'uid': member.uid,
+  					'code': product.code,
+  					'name': product.name,
+  					'count': count,
+  					'price': product.price,
+  					'discount': product.discount,
+  					'point': product.point,
+  					'delivery': product.delivery,
+  					'total': total
   			}
   			
   			var url = "/kmarket/shop/cart";

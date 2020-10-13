@@ -8,7 +8,7 @@
                <a th:if="${session.member}" th:href="@{/member/logout}">로그아웃</a>
                <a th:if="${session.member}" href="#">마이페이지</a>
                <a th:if="${session.type == 2}" th:href="@{/admin}">상품관리</a>
-               <a href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i>&nbsp;장바구니</a>
+               <a th:href=@{/shop/cart}><i class="fa fa-shopping-cart" aria-hidden="true"></i>&nbsp;장바구니</a>
            </div>
        </div>
        <div class="logo">
