@@ -87,15 +87,16 @@ public class ShopController {
 	
 	@ResponseBody
 	@PostMapping("/shop/cartDel")
-	public int cartDel(HttpSession sess, int[] codes) {
-		MemberVO member = (MemberVO) sess.getAttribute("member");
-		int result = service.deleteCart(member.getUid(), codes);
-		
-		return result;		
+	public int cartDel(int[] seqs) {
+		return service.deleteCart(seqs);		
 	}
 	
 	@GetMapping("/shop/order")
-	public String order() {
+	public String order(int[] seqs, Model model) {
+		
+		List<ProductCartVO> items = service.selectOrder(seqs);
+		model.addAttribute("items", items);
+		
 		return "/shop/order";
 	}
 	

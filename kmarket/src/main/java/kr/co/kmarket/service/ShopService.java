@@ -73,8 +73,12 @@ public class ShopService {
 		
 	}
 	
-	public int deleteCart(String uid, int[] codes) {
-		return dao.deleteCart(uid, codes);
+	public int deleteCart(int[] seqs) {
+		return dao.deleteCart(seqs);
+	}
+	
+	public List<ProductCartVO> selectOrder(int[] seqs) {
+		return dao.selectOrder(seqs);
 	}
 
 }

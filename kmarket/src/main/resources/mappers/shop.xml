@@ -44,12 +44,24 @@
 	
 	<delete id="deleteCart" parameterType="int">
 		DELETE FROM `km_products_cart` 
-		WHERE `uid`=#{uid} AND `code` IN 
-		<foreach collection="codes" item="code" open="(" close=")" separator=",">
-			#{code}
+		WHERE `seq` IN 
+		<foreach collection="seqs" item="seq" open="(" close=")" separator=",">
+			#{seq}
 		</foreach>
 		;
 	</delete>
+	
+	<select id="selectOrder" resultType="kr.co.kmarket.vo.ProductCartVO">
+		SELECT a.*, b.`cate1`, b.`cate2`, b.`thumb1` 
+		FROM `km_products_cart` AS a
+		JOIN `km_products` AS b
+		ON a.`code` = b.`code`
+		WHERE
+		`seq` IN
+		<foreach collection="seqs" item="seq" open="(" separator="," close=")">
+			#{seq}	
+		</foreach>
+	</select>
 
 <!-- 
 	<insert id="insertUser">

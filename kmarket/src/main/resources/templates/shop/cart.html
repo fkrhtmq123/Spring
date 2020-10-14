@@ -23,20 +23,20 @@
 			
 			$('input[name=del]').click(function(){
 				var checkbox = $('input[name=chk]:checked')
-				var codes = []
+				var seqs = []
 				
 				checkbox.each(function(i){
-					codes[i] = $(this).val()
+					seqs[i] = $(this).val()
 				})
 				
-				if(codes.length == 0) {
+				if(seqs.length == 0) {
 					alert('최소 1개 이상의 상품을 선택하세요.')
 					return
-				} 
+				}
 				
-				// 서버 전송
+				// 서버에 상품 pk값 전송
 				var url = '/kmarket/shop/cartDel'
-				var param = {'codes':codes}
+				var param = {'seqs':seqs}
 				
 				$.ajax({
 					url: url,
@@ -46,9 +46,54 @@
 					dataType: 'text',
 					success: function(data){
 						alert('삭제 상품 갯수 : '+data)
-    					location.replace('/kmarket/shop/cart')
+    					location.href = '/kmarket/shop/cart'
 					}
 				})
+			}) // 선택 삭제 끝
+			
+			// 주문하기 버튼
+  			$('input[name=order]').click(function(){
+  				
+				var seqs = []
+  				
+  				$('input[name=chk]:checked').each(function(i){
+  					seqs[i] = $(this).val()
+  				});
+  				
+  				if(seqs.length == 0){
+  					alert('주문할 상품을 선택하세요.')
+  					return;
+  				}
+  				
+  				var seqs = {'seqs': seqs}
+  				var params = $.param(seqs, true)
+  				
+  				location.href = '/kmarket/shop/order?'+params
+  				
+  			})
+  			
+			// 체크한 상품 가격합산
+			var count = 0
+			var total = 0
+			var checkbox = $('input[name=chk]')
+			checkbox.click(function(){
+				$(this).each(function(){
+					var price = $('.cell').find('td:eq(7)').html()
+					console.log(price)
+				})
+				
+				if($(this).is(':checked')) {
+					count++
+				} else {
+					count--
+				}
+				$('.info').find('tr:eq(0) > td:eq(1)').text(count)
+				//$('.info').find('tr:eq(1) > td:eq(1)').text(count)
+				//$('.info').find('tr:eq(2) > td:eq(1)').text(count)
+				//$('.info').find('tr:eq(3) > td:eq(1)').text(count)
+				//$('.info').find('tr:eq(4) > td:eq(1)').text(count)
+				//$('.info').find('tr:eq(5) > td:eq(1)').text(total)
+				
 			})
 		})
 	</script>
@@ -63,6 +108,7 @@
 	  
 	  <section>
 	    <form action="#">
+	    <input type="hidden" name="uid" th:value=${session.member.uid}>
 	      <table>
 	        <thead>
 	          <tr>
@@ -80,8 +126,8 @@
 	          <tr th:class="${items.size()} > 0 ? 'empty':''">
 	            <td colspan="8">장바구니에 상품이 없습니다.</td>
 	          </tr>
-	          <tr th:each="item:${items}">
-	            <td><input type="checkbox" name="chk" th:value="${item.code}"></td>
+	          <tr class="cell" th:each="item:${items}">
+	            <td><input type="checkbox" name="chk" th:value="${item.seq}"></td>
 	            <td>
 	              <article>
 	                <a href="#"><img th:src="@{'/thumb/'+${item.cate1}+'/'+${item.cate2}+'/'+${item.thumb1}}" alt="상품이미지"></a>
@@ -110,30 +156,45 @@
 	    <table border="0">
 	      <tr>
 	        <td>상품수</td>
-	        <td>[[${totalInfo.count}]]</td>
+	        <td>
+	        0
+	        <!-- [[${totalInfo.count}]] --></td>
 	      </tr>
 	      <tr>
 	        <td>상품금액</td>
-	        <td>[[${#numbers.formatInteger(totalInfo.price, 3, 'COMMA')}]]</td>
+	        <td>
+	        0
+	        <!-- [[${#numbers.formatInteger(totalInfo.price, 3, 'COMMA')}]] -->
+	        </td>
 	      </tr>
 	      <tr>
 	        <td>할인금액</td>
-	        <td>-[[${#numbers.formatInteger(totalInfo.sale, 3, 'COMMA')}]]</td>
+	        <td>
+	        -0
+	        <!-- [[${#numbers.formatInteger(totalInfo.sale, 3, 'COMMA')}]] -->
+	        </td>
 	      </tr>
 	      <tr>
 	        <td>배송비</td>
-	        <td>[[${#numbers.formatInteger(totalInfo.delivery, 3, 'COMMA')}]]</td>
+	        <td>
+	        0
+	        <!-- [[${#numbers.formatInteger(totalInfo.delivery, 3, 'COMMA')}]] -->
+	        </td>
 	      </tr>              
 	      <tr>
 	        <td>포인트</td>
-	        <td>[[${#numbers.formatInteger(totalInfo.point, 3, 'COMMA')}]]</td>
+	        <td>
+	        0
+	        <!-- [[${#numbers.formatInteger(totalInfo.point, 3, 'COMMA')}]] -->
+	        </td>
 	      </tr>
 	      <tr>
 	        <td>전체주문금액</td>
-	        <td>[[${#numbers.formatInteger(totalInfo.total, 3, 'COMMA')}]]</td>
+	        <td id="total">0</td>
+	        <!-- [[${#numbers.formatInteger(totalInfo.total, 3, 'COMMA')}]] -->
 	      </tr>
 	    </table>
-	    <input type="button" name="order_btn" value="주문하기">
+	    <input type="button" name="order" value="주문하기">
 	
 	  </div>
 	</section>
