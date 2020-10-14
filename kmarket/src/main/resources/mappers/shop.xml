@@ -41,6 +41,15 @@
 		ON a.`code` = b.`code` 
 		WHERE `uid`=#{uid};
 	</select>
+	
+	<delete id="deleteCart" parameterType="int">
+		DELETE FROM `km_products_cart` 
+		WHERE `uid`=#{uid} AND `code` IN 
+		<foreach collection="codes" item="code" open="(" close=")" separator=",">
+			#{code}
+		</foreach>
+		;
+	</delete>
 
 <!-- 
 	<insert id="insertUser">

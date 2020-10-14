@@ -72,5 +72,9 @@ public class ShopService {
 		return new CartTotalInfoVO(count, price, sale, delivery, point, total);
 		
 	}
+	
+	public int deleteCart(String uid, int[] codes) {
+		return dao.deleteCart(uid, codes);
+	}
 
 }
