@@ -35,7 +35,7 @@
 		`rdate`=NOW();
 	</insert>
 	
-	<select id="selectCart" resultType="kr.co.kmarket.vo.ProductCartVO">
+	<select id="selectCart" resultType="kr.co.kmarket.vo.ProductsCartVO">
 		SELECT a.*, b.`cate1`, b.`cate2`, b.`thumb1` FROM `km_products_cart` AS a 
 		JOIN `km_products` AS b 
 		ON a.`code` = b.`code` 
@@ -51,7 +51,7 @@
 		;
 	</delete>
 	
-	<select id="selectOrder" resultType="kr.co.kmarket.vo.ProductCartVO">
+	<select id="selectOrder" resultType="kr.co.kmarket.vo.ProductsCartVO">
 		SELECT a.*, b.`cate1`, b.`cate2`, b.`thumb1` 
 		FROM `km_products_cart` AS a
 		JOIN `km_products` AS b
@@ -61,6 +61,7 @@
 		<foreach collection="seqs" item="seq" open="(" separator="," close=")">
 			#{seq}	
 		</foreach>
+		;
 	</select>
 
 <!-- 

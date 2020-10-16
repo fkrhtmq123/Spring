@@ -27,43 +27,32 @@
             <table border="0">
               <tr>
                 <th>상품명</th>
-                <th>상품금액</th>
-                <th>할인금액</th>
-                <th>수량</th>
-                <th>주문금액</th>
+                <th>총수량</th>
+                <th>판매가</th>
+                <th>할인</th>
+                <th>적립포인트</th>
+                <th>배송비</th>
+                <th>소계</th>
               </tr>
-              <tr>
+              <tr class="row" th:each="seq, iter : ${ordered}">
                 <td>
                   <article>
-                    <img src="../img/thumb-sample-t2.jpg" alt="">
+                    <img th:src="${ordered.thumb1[iter.index]}" alt="thumb">
                     <div>
-                      <h2><a href="#">TH-블락체크 셔츠-그레이2 [면세]</a></h2>
-                      <p>SIZE:M / COLOR:블루 1개</p>
+                      <h2><a href="#">[[${ordered.name[iter.index]}]]</a></h2>
                     </div>
                   </article>
                 </td>
-                <td>17,000원</td>
-                <td>1,000원</td>
-                <td>1</td>
-                <td>16,000원</td>
+                <td>[[${ordered.counts[iter.index]}]]</td>
+                <td>[[${ordered.prices[iter.index]}]]</td>
+                <td>[[${ordered.discount[iter.index]}]]</td>
+                <td>[[${ordered.point[iter.index]}]]</td>
+                <td>[[${ordered.delivery[iter.index]}]]</td>
+                <td>[[${ordered.total[iter.index]}]]</td>
               </tr>
-              <tr>
-                <td>
-                  <article>
-                    <img src="../img/thumb-sample-t1.jpg" alt="">
-                    <div>
-                      <h2><a href="#">TH-블락체크 셔츠-그레이2 [면세]</a></h2>
-                      <p>SIZE:M / COLOR:블루 1개</p>
-                    </div>
-                  </article>
-                </td>
-                <td>17,000원</td>
-                <td>1,000원</td>
-                <td>1</td>
-                <td>16,000원</td>
-              </tr>
+              
               <tr class="total">
-                <td colspan="4"></td>
+                <td colspan="6"></td>
                 <td>
                   <table border="0">
                     <tr>

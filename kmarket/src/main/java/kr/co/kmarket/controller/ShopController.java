@@ -1,5 +1,6 @@
 package kr.co.kmarket.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -11,10 +12,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import kr.co.kmarket.persistence.ProductsOrderRepo;
 import kr.co.kmarket.service.ShopService;
-import kr.co.kmarket.vo.CartTotalInfoVO;
+import kr.co.kmarket.vo.OrderTotalInfoVO;
 import kr.co.kmarket.vo.MemberVO;
-import kr.co.kmarket.vo.ProductCartVO;
+import kr.co.kmarket.vo.ProductsCartVO;
+import kr.co.kmarket.vo.ProductsOrderVO;
 import kr.co.kmarket.vo.ProductsVO;
 import kr.co.kmarket.vo.ResultVO;
 
@@ -23,6 +26,9 @@ public class ShopController {
 	
 	@Autowired
 	private ShopService service;
+	
+	@Autowired
+	private ProductsOrderRepo productsOrderRepo;
 	
 	@GetMapping("/shop/search")
 	public String searach() {
@@ -63,13 +69,13 @@ public class ShopController {
 		MemberVO member = (MemberVO) sess.getAttribute("member");
 		
 		if(member != null) {
-			List<ProductCartVO> items = service.selectCart(member.getUid());
+			List<ProductsCartVO> items = service.selectCart(member.getUid());
 			
 			model.addAttribute("items", items);
 			// 전체 합계에 출력할 데이터
-			CartTotalInfoVO totalInfo = service.cateTotalInfo(items);
+			//OrderTotalInfoVO totalInfo = service.orderTotalInfo(items);
 			
-			model.addAttribute("totalInfo", totalInfo);
+			//model.addAttribute("totalInfo", totalInfo);
 			
 			return "/shop/cart";
 		} else {
@@ -80,7 +86,7 @@ public class ShopController {
 	
 	@ResponseBody
 	@PostMapping("/shop/cart")
-	public ResultVO cart(ProductCartVO vo) {
+	public ResultVO cart(ProductsCartVO vo) {
 		int result = service.insertCart(vo);
 		return new ResultVO(result);
 	}
@@ -94,14 +100,39 @@ public class ShopController {
 	@GetMapping("/shop/order")
 	public String order(int[] seqs, Model model) {
 		
-		List<ProductCartVO> items = service.selectOrder(seqs);
+		List<ProductsCartVO> items = service.selectOrder(seqs);
 		model.addAttribute("items", items);
+		
+		OrderTotalInfoVO totalInfo = service.orderTotalInfo(items);
+		model.addAttribute("totalInfo", totalInfo);
 		
 		return "/shop/order";
 	}
 	
+	@PostMapping("/shop/order")
+	public String order(ProductsOrderVO vo, int[] cartSeqs) {
+		vo.setRdate(LocalDateTime.now().toString());
+		
+		// 주문 테이블에 주문 상품 입력
+		ProductsOrderVO ordered = productsOrderRepo.save(vo);
+		
+		System.out.println("주문 번호 : "+ordered.getSeq());
+		System.out.println("주문 아이디 : "+ordered.getUid());
+		
+		// 주문 상품은 장바구니에서 삭제
+		//service.deleteCart(cartSeqs);
+		
+		return "redirect:/shop/order-complete?seq="+ordered.getSeq();
+	}
+	
 	@GetMapping("/shop/order-complete")
-	public String orderComplete() {
+	public String orderComplete(int seq, Model model) {
+		ProductsOrderVO vo = productsOrderRepo.findById(seq).get();
+		
+		String products = vo.getProducts();
+		
+		model.addAttribute(vo);
+		
 		return "/shop/order-complete";
 	}
 

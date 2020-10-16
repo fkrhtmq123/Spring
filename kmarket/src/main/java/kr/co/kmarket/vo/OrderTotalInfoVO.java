@@ -5,7 +5,7 @@ import lombok.*;
 @Getter
 @Setter
 @AllArgsConstructor
-public class CartTotalInfoVO {
+public class OrderTotalInfoVO {
 	
 	int count;
 	int price;

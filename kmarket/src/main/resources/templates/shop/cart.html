@@ -5,7 +5,7 @@
 	<!-- 장바구니 -->
 	<section id="cart" layout:fragment="content">
 	
-	<script>
+	<script th:inline="javascript">
 		$(function(){
 			var checkAll = $('input[name=all]')
 			
@@ -74,26 +74,53 @@
   			
 			// 체크한 상품 가격합산
 			var count = 0
+			var price = 0
+			var discount = 0
+			var point = 0
+			var delivery = 0
 			var total = 0
-			var checkbox = $('input[name=chk]')
+			var checkbox = $('input[name=chk]');
+			
 			checkbox.click(function(){
-				$(this).each(function(){
-					var price = $('.cell').find('td:eq(7)').html()
-					console.log(price)
-				})
-				
 				if($(this).is(':checked')) {
-					count++
+					count++;
 				} else {
-					count--
+					count--;
 				}
-				$('.info').find('tr:eq(0) > td:eq(1)').text(count)
-				//$('.info').find('tr:eq(1) > td:eq(1)').text(count)
-				//$('.info').find('tr:eq(2) > td:eq(1)').text(count)
-				//$('.info').find('tr:eq(3) > td:eq(1)').text(count)
-				//$('.info').find('tr:eq(4) > td:eq(1)').text(count)
-				//$('.info').find('tr:eq(5) > td:eq(1)').text(total)
-				
+				$(this).each(function(){
+					if($(this).is(':checked')) {
+						productCount = $(this).parent().parent().find('#count').attr("class")
+						
+						price1 = $(this).parent().parent().find('#price').attr("class")
+						price += parseInt(price1)*productCount
+						
+						discount1 = $(this).parent().parent().find('#discount').attr("class")
+						discount += price*(parseInt(discount1)/100)
+
+						point1 = $(this).parent().parent().find('#point').attr("class")
+						point += parseInt(point1)
+
+						delivery = $(this).parent().parent().find('#delivery').val()
+						if(delivery > 3000) {
+							delivery = 3000;
+						}
+
+						total1 = $(this).parent().parent().find('#total').attr("class")
+						total += parseInt(total1)
+					} else {
+						price -= price
+						discount -= discount
+						point -= point
+						delivery -= delivery
+						total -= total
+					}
+					$('.info').find('.count').text(count)
+					$('.info').find('.price').text(price.toLocaleString())
+					$('.info').find('.discount').text(discount.toLocaleString())
+					$('.info').find('.delivery').text(delivery.toLocaleString())
+					$('.info').find('.point').text(point.toLocaleString())
+					$('.info').find('.total').text(total.toLocaleString())
+				})
 			})
 		})
 	</script>
@@ -117,7 +144,7 @@
 	            <th>총수량</th>
 	            <th>판매가</th>
 	            <th>할인(%)</th>
-	            <th>포인트</th>
+	            <th>적립포인트</th>
 	            <th>배송비</th>
 	            <th>소계</th>
 	          </tr>
@@ -126,7 +153,7 @@
 	          <tr th:class="${items.size()} > 0 ? 'empty':''">
 	            <td colspan="8">장바구니에 상품이 없습니다.</td>
 	          </tr>
-	          <tr class="cell" th:each="item:${items}">
+	          <tr id="cell" th:each="item:${items}">
 	            <td><input type="checkbox" name="chk" th:value="${item.seq}"></td>
 	            <td>
 	              <article>
@@ -137,13 +164,16 @@
 	                </div>
 	              </article>
 	            </td>
-	            <td>[[${item.count}]]</td>
-	            <td>[[${#numbers.formatInteger(item.price, 3, 'COMMA')}]]</td>
-	            <td>[[${item.discount}]]</td>
-	            <td>[[${#numbers.formatInteger(item.point, 3, 'COMMA')}]]</td>
-	            <td th:if="${item.delivery > 0}">[[${#numbers.formatInteger(item.delivery, 3, 'COMMA')}]]</</td>
+	            <td id="count" th:class="${item.count}">[[${item.count}]]</td>
+	            <td id="price" th:class="${item.price}">[[${#numbers.formatInteger(item.price, 3, 'COMMA')}]]</td>
+	            <td id="discount" th:class="${item.discount}">[[${item.discount}]]</td>
+	            <td id="point" th:class="${item.point}">[[${#numbers.formatInteger(item.point, 3, 'COMMA')}]]</td>
+	            <td th:if="${item.delivery > 0}">
+	            [[${#numbers.formatInteger(item.delivery, 3, 'COMMA')}]]
+	            	<input type="hidden" id="delivery" th:value="${item.delivery}">
+	            </td>
 	            <td th:if="${item.delivery = 0}">무료배송</td>
-	            <td>[[${#numbers.formatInteger(item.total, 3, 'COMMA')}]]</td>
+	            <td id="total" th:class="${item.total}">[[${#numbers.formatInteger(item.total, 3, 'COMMA')}]]</td>
 	          </tr>
 	        </tbody>
 	      </table>
@@ -156,42 +186,27 @@
 	    <table border="0">
 	      <tr>
 	        <td>상품수</td>
-	        <td>
-	        0
-	        <!-- [[${totalInfo.count}]] --></td>
+	        <td class="count">0</td>
 	      </tr>
 	      <tr>
 	        <td>상품금액</td>
-	        <td>
-	        0
-	        <!-- [[${#numbers.formatInteger(totalInfo.price, 3, 'COMMA')}]] -->
-	        </td>
+	        <td class="price">0</td>
 	      </tr>
 	      <tr>
 	        <td>할인금액</td>
-	        <td>
-	        -0
-	        <!-- [[${#numbers.formatInteger(totalInfo.sale, 3, 'COMMA')}]] -->
-	        </td>
+	        <td class="discount">-0</td>
 	      </tr>
 	      <tr>
 	        <td>배송비</td>
-	        <td>
-	        0
-	        <!-- [[${#numbers.formatInteger(totalInfo.delivery, 3, 'COMMA')}]] -->
-	        </td>
+	        <td class="delivery">0</td>
 	      </tr>              
 	      <tr>
 	        <td>포인트</td>
-	        <td>
-	        0
-	        <!-- [[${#numbers.formatInteger(totalInfo.point, 3, 'COMMA')}]] -->
-	        </td>
+	        <td class="point">0</td>
 	      </tr>
 	      <tr>
 	        <td>전체주문금액</td>
-	        <td id="total">0</td>
-	        <!-- [[${#numbers.formatInteger(totalInfo.total, 3, 'COMMA')}]] -->
+	        <td class="total">0</td>
 	      </tr>
 	    </table>
 	    <input type="button" name="order" value="주문하기">

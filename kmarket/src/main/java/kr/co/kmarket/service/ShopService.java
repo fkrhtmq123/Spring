@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.kmarket.dao.ShopDAO;
-import kr.co.kmarket.vo.CartTotalInfoVO;
+import kr.co.kmarket.vo.OrderTotalInfoVO;
 import kr.co.kmarket.vo.CategoriesVO;
-import kr.co.kmarket.vo.ProductCartVO;
+import kr.co.kmarket.vo.ProductsCartVO;
 import kr.co.kmarket.vo.ProductsVO;
 
 @Service
@@ -27,12 +27,20 @@ public class ShopService {
 		return dao.selectProduct(code);
 	}
 	
-	public int insertCart(ProductCartVO vo) {
+	public int insertCart(ProductsCartVO vo) {
 		return dao.insertCart(vo);
 	}
 	
-	public List<ProductCartVO> selectCart(String uid) {
+	public List<ProductsCartVO> selectCart(String uid) {
 		return dao.selectCart(uid);
+	}
+	
+	public int deleteCart(int[] seqs) {
+		return dao.deleteCart(seqs);
+	}
+	
+	public List<ProductsCartVO> selectOrder(int[] seqs) {
+		return dao.selectOrder(seqs);
 	}
 	
 	public void setTitles(HttpSession sess, int cate1, int cate2) {
@@ -52,7 +60,7 @@ public class ShopService {
 		return tits;
 	}
 	
-	public CartTotalInfoVO cateTotalInfo(List<ProductCartVO> items) {
+	public OrderTotalInfoVO orderTotalInfo(List<ProductsCartVO> items) {
 		
 		int count = items.size();
 		int price = 0;
@@ -61,24 +69,20 @@ public class ShopService {
 		int point = 0;
 		int total = 0;
 		
-		for(ProductCartVO item : items) {
+		for(ProductsCartVO item : items) {
 			price    += item.getPrice() * item.getCount();
 			sale     += (item.getPrice() * item.getDiscount()/100) * item.getCount();
 			delivery += item.getDelivery();
-			point    += item.getPoint();
+			point    += (item.getPoint()*item.getCount());
 			total    += item.getTotal();
 		}
+		if(delivery > 3000 ) {
+			delivery = 3000;
+			total = total + delivery;
+		}
 		
-		return new CartTotalInfoVO(count, price, sale, delivery, point, total);
+		return new OrderTotalInfoVO(count, price, sale, delivery, point, total);
 		
-	}
-	
-	public int deleteCart(int[] seqs) {
-		return dao.deleteCart(seqs);
-	}
-	
-	public List<ProductCartVO> selectOrder(int[] seqs) {
-		return dao.selectOrder(seqs);
 	}
 
 }
