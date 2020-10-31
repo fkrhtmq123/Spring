@@ -116,11 +116,8 @@ public class ShopController {
 		// 주문 테이블에 주문 상품 입력
 		ProductsOrderVO ordered = productsOrderRepo.save(vo);
 		
-		System.out.println("주문 번호 : "+ordered.getSeq());
-		System.out.println("주문 아이디 : "+ordered.getUid());
-		
 		// 주문 상품은 장바구니에서 삭제
-		//service.deleteCart(cartSeqs);
+		service.deleteCart(cartSeqs);
 		
 		return "redirect:/shop/order-complete?seq="+ordered.getSeq();
 	}
